@@ -13,9 +13,19 @@ export class PhotoViewComponent implements OnInit {
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.dataService.getPhotos().subscribe((result) => {
-      console.log(result);
-      this.myLibrary = result;
-    });
+    const observer = {
+      next: (result: any) => {
+        console.log(result);
+        this.myLibrary = result;
+      },
+      error: (error: any) => {
+        console.log('ERRORRR');
+      },
+      complete: () => {
+        console.log('COMPLETED');
+      },
+    };
+
+    this.dataService.getPhotos().subscribe(observer);
   }
 }
